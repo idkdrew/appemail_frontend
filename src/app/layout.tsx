@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Email System - Gerencie seus emails",
+  title: "Sistema de Email - Gerencie seus emails",
   description: "Sistema completo de gerenciamento de emails com rascunhos e envio",
 };
 

@@ -32,7 +32,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Email System
+            Cadastro
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
             Crie sua conta para começar

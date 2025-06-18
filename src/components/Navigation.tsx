@@ -26,7 +26,7 @@ export default function Navigation() {
         <div className="flex justify-between h-16">
           <div className="flex items-center space-x-8">
             <Link href="/profile" className="text-xl font-bold text-blue-600 dark:text-blue-400">
-              Email System
+              Projeto Cliente Servidor
             </Link>
             
             <div className="hidden md:flex space-x-4">
