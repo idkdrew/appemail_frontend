@@ -83,7 +83,7 @@ export default function DraftsPage() {
             onClick={() => router.push('/compose')}
             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
           >
-            ✏️ Novo Rascunho
+            Novo Rascunho
           </button>
         </div>
 
@@ -101,7 +101,6 @@ export default function DraftsPage() {
 
         {drafts.length === 0 ? (
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-8 text-center">
-            <div className="text-4xl mb-4">📝</div>
             <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
               Nenhum rascunho encontrado
             </h3>
@@ -124,18 +123,21 @@ export default function DraftsPage() {
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
                       {draft.assunto || 'Sem assunto'}
                     </h3>
-                    <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">
-                      📝
-                    </span>
                   </div>
                   
                   <div className="space-y-2 mb-4">
                     <p className="text-sm text-gray-600 dark:text-gray-400">
-                      <strong>Para:</strong> {draft.emailDestinatario}
+                      <strong>Para:</strong> {draft.emailDestinatario || 'Não informado'}
                     </p>
                     <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
-                      {draft.corpo.substring(0, 100)}
-                      {draft.corpo.length > 100 && '...'}
+                      {draft.corpo ? (
+                        <>
+                          {draft.corpo.substring(0, 100)}
+                          {draft.corpo.length > 100 && '...'}
+                        </>
+                      ) : (
+                        'Sem conteúdo'
+                      )}
                     </p>
                   </div>
                   
@@ -144,19 +146,19 @@ export default function DraftsPage() {
                       onClick={() => handleEdit(draft.rascunhoId)}
                       className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded text-sm font-medium transition-colors"
                     >
-                      ✏️ Editar
+                      Editar
                     </button>
                     <button
                       onClick={() => handleSend(draft.rascunhoId)}
                       className="flex-1 bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded text-sm font-medium transition-colors"
                     >
-                      📤 Enviar
+                      Enviar
                     </button>
                     <button
                       onClick={() => handleDelete(draft.rascunhoId)}
                       className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded text-sm font-medium transition-colors"
                     >
-                      🗑️
+                      Deletar
                     </button>
                   </div>
                 </div>

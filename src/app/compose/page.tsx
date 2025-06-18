@@ -44,8 +44,9 @@ export default function ComposePage() {
   };
 
   const handleSaveDraft = async () => {
-    if (!assunto.trim() || !emailDestinatario.trim() || !corpo.trim()) {
-      setError('Todos os campos são obrigatórios');
+    // For drafts, only require at least one field to be filled
+    if (!assunto.trim() && !emailDestinatario.trim() && !corpo.trim()) {
+      setError('Pelo menos um campo deve ser preenchido para salvar o rascunho');
       return;
     }
 
@@ -81,8 +82,9 @@ export default function ComposePage() {
   };
 
   const handleSendEmail = async () => {
+    // For sending emails, all fields are required
     if (!assunto.trim() || !emailDestinatario.trim() || !corpo.trim()) {
-      setError('Todos os campos são obrigatórios');
+      setError('Todos os campos são obrigatórios para enviar o email');
       return;
     }
 
@@ -193,10 +195,8 @@ export default function ComposePage() {
                 disabled={loading}
                 className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2"
               >
-                {loading ? (
+                {loading && (
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                ) : (
-                  <span>📤</span>
                 )}
                 <span>Enviar</span>
               </button>
@@ -206,10 +206,8 @@ export default function ComposePage() {
                 disabled={loading}
                 className="bg-gray-600 hover:bg-gray-700 disabled:bg-gray-400 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2"
               >
-                {loading ? (
+                {loading && (
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                ) : (
-                  <span>📝</span>
                 )}
                 <span>{isEditing ? 'Atualizar Rascunho' : 'Salvar Rascunho'}</span>
               </button>
@@ -217,9 +215,8 @@ export default function ComposePage() {
               <button
                 onClick={handleClear}
                 disabled={loading}
-                className="bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2"
+                className="bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white px-6 py-2 rounded-lg font-medium transition-colors"
               >
-                <span>🗑️</span>
                 <span>Limpar</span>
               </button>
 

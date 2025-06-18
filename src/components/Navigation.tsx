@@ -14,10 +14,10 @@ export default function Navigation() {
   };
 
   const navItems = [
-    { href: '/profile', label: 'Perfil', icon: '👤' },
-    { href: '/emails', label: 'Emails', icon: '📧' },
-    { href: '/drafts', label: 'Rascunhos', icon: '📝' },
-    { href: '/compose', label: 'Compor', icon: '✏️' },
+    { href: '/profile', label: 'Perfil' },
+    { href: '/emails', label: 'Emails' },
+    { href: '/drafts', label: 'Rascunhos' },
+    { href: '/compose', label: 'Compor' },
   ];
 
   return (
@@ -34,14 +34,13 @@ export default function Navigation() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                     pathname === item.href
                       ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
                       : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >
-                  <span>{item.icon}</span>
-                  <span>{item.label}</span>
+                  {item.label}
                 </Link>
               ))}
             </div>
@@ -65,14 +64,13 @@ export default function Navigation() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium transition-colors ${
+              className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
                 pathname === item.href
                   ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
                   : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
               }`}
             >
-              <span>{item.icon}</span>
-              <span>{item.label}</span>
+              {item.label}
             </Link>
           ))}
         </div>

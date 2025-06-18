@@ -109,16 +109,11 @@ export default function ProfilePage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
           <div className="p-6">
             <div className="mb-6">
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                  {user.nome?.charAt(0).toUpperCase() || '👤'}
-                </div>
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                    {user.nome}
-                  </h2>
-                  <p className="text-gray-600 dark:text-gray-400">{user.email}</p>
-                </div>
+              <div className="mb-4">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  {user.nome}
+                </h2>
+                <p className="text-gray-600 dark:text-gray-400">{user.email}</p>
               </div>
             </div>
 
@@ -170,10 +165,8 @@ export default function ProfilePage() {
                   disabled={loading}
                   className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white py-2 px-4 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2"
                 >
-                  {loading ? (
+                  {loading && (
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  ) : (
-                    <span>💾</span>
                   )}
                   <span>Atualizar Perfil</span>
                 </button>
@@ -183,10 +176,8 @@ export default function ProfilePage() {
                   disabled={loading}
                   className="w-full bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white py-2 px-4 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2"
                 >
-                  {loading ? (
+                  {loading && (
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  ) : (
-                    <span>🗑️</span>
                   )}
                   <span>Deletar Conta</span>
                 </button>

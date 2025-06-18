@@ -82,10 +82,8 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold rounded-lg transition-colors flex items-center justify-center space-x-2"
           >
-            {loading ? (
+            {loading && (
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-            ) : (
-              <span>🔐</span>
             )}
             <span>{loading ? 'Entrando...' : 'Entrar'}</span>
           </button>

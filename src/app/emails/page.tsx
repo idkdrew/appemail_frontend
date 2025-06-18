@@ -51,12 +51,12 @@ export default function EmailsPage() {
     }
   };
 
-  const getStatusIcon = (status: string) => {
+  const getStatusText = (status: string) => {
     switch (status) {
-      case 'lido': return '📖';
-      case 'nao_lido': return '📩';
-      case 'enviado': return '📤';
-      default: return '📧';
+      case 'lido': return 'Lido';
+      case 'nao_lido': return 'Não lido';
+      case 'enviado': return 'Enviado';
+      default: return status;
     }
   };
 
@@ -113,7 +113,6 @@ export default function EmailsPage() {
                       <div className="flex items-start justify-between">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center space-x-2">
-                            <span>{getStatusIcon(email.status)}</span>
                             <p className={`text-sm truncate ${getStatusColor(email.status)}`}>
                               {email.emailRemetente || email.emailDestinatario}
                             </p>
@@ -145,7 +144,7 @@ export default function EmailsPage() {
                       {selectedEmail.assunto}
                     </h2>
                     <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(selectedEmail.status)}`}>
-                      {getStatusIcon(selectedEmail.status)} {selectedEmail.status}
+                      {getStatusText(selectedEmail.status)}
                     </span>
                   </div>
                   
@@ -173,7 +172,6 @@ export default function EmailsPage() {
             ) : (
               <div className="bg-white dark:bg-gray-800 rounded-lg shadow flex items-center justify-center h-64">
                 <div className="text-center text-gray-500 dark:text-gray-400">
-                  <div className="text-4xl mb-4">📧</div>
                   <p>Selecione um email para visualizar</p>
                 </div>
               </div>
