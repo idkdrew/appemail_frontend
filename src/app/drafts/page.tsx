@@ -74,9 +74,6 @@ export default function DraftsPage() {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Rascunhos</h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">
-              Gerencie seus rascunhos de email
-            </p>
           </div>
           
           <button
@@ -104,15 +101,6 @@ export default function DraftsPage() {
             <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
               Nenhum rascunho encontrado
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Comece criando seu primeiro rascunho de email
-            </p>
-            <button
-              onClick={() => router.push('/compose')}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
-            >
-              Criar Rascunho
-            </button>
           </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

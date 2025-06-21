@@ -4,12 +4,14 @@ import { useEffect, useState } from 'react';
 import { getEmails, markEmailAsRead } from '../../services/emailService';
 import { Email } from '../../types/email';
 import Layout from '../../components/Layout';
+import { useRouter } from 'next/navigation'; // já está usando
 
 export default function EmailsPage() {
   const [emails, setEmails] = useState<Email[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
   const [error, setError] = useState('');
+  const router = useRouter();
 
   useEffect(() => {
     fetchEmails();
@@ -26,38 +28,26 @@ export default function EmailsPage() {
     }
   };
 
-  const handleEmailClick = async (email: Email) => {
-    setSelectedEmail(email);
-    
-    if (email.status !== 'lido') {
-      try {
-        const updatedEmail = await markEmailAsRead(email.emailId);
-        setEmails(emails.map(e => 
-          e.emailId === email.emailId ? updatedEmail : e
-        ));
-        setSelectedEmail(updatedEmail);
-      } catch (err) {
-        console.error('Erro ao marcar email como lido:', err);
-      }
-    }
+  const handleEmailClick = (email: Email) => {
+  router.push(`/emails/${email.emailId}`);
   };
 
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'lido': return 'text-gray-500';
-      case 'nao_lido': return 'text-blue-600 font-semibold';
-      case 'enviado': return 'text-green-600';
-      default: return 'text-gray-500';
-    }
+  switch (status) {
+    case 'lido': return 'text-gray-500';
+    case 'nao_lido': return 'text-blue-600 font-semibold';
+    case 'enviado': return 'text-green-600';
+    default: return 'text-gray-500';
+  }
   };
 
   const getStatusText = (status: string) => {
-    switch (status) {
-      case 'lido': return 'Lido';
-      case 'nao_lido': return 'Não lido';
-      case 'enviado': return 'Enviado';
-      default: return status;
-    }
+  switch (status) {
+    case 'lido': return 'Lido';
+    case 'nao_lido': return 'Não lido';
+    case 'enviado': return 'Enviado';
+    default: return status;
+  }
   };
 
   if (loading) {
@@ -75,9 +65,6 @@ export default function EmailsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Emails</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
-            Gerencie seus emails recebidos e enviados
-          </p>
         </div>
 
         {error && (
@@ -86,7 +73,7 @@ export default function EmailsPage() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6">
           {/* Email List */}
           <div className="lg:col-span-1">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
@@ -132,50 +119,6 @@ export default function EmailsPage() {
                 )}
               </div>
             </div>
-          </div>
-
-          {/* Email Content */}
-          <div className="lg:col-span-2">
-            {selectedEmail ? (
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
-                <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-                  <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                      {selectedEmail.assunto}
-                    </h2>
-                    <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(selectedEmail.status)}`}>
-                      {getStatusText(selectedEmail.status)}
-                    </span>
-                  </div>
-                  
-                  <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-                    <div>
-                      <strong>De:</strong> {selectedEmail.emailRemetente}
-                    </div>
-                    <div>
-                      <strong>Para:</strong> {selectedEmail.emailDestinatario}
-                    </div>
-                    <div>
-                      <strong>Data:</strong> {selectedEmail.dataEnvio}
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="p-6">
-                  <div className="prose dark:prose-invert max-w-none">
-                    <div className="whitespace-pre-wrap text-gray-900 dark:text-white">
-                      {selectedEmail.corpo}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow flex items-center justify-center h-64">
-                <div className="text-center text-gray-500 dark:text-gray-400">
-                  <p>Selecione um email para visualizar</p>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>

@@ -56,25 +56,6 @@ export default function Navigation() {
           </div>
         </div>
       </div>
-
-      {/* Mobile menu */}
-      <div className="md:hidden border-t border-gray-200 dark:border-gray-700">
-        <div className="px-2 pt-2 pb-3 space-y-1">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
-                pathname === item.href
-                  ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
-                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </div>
-      </div>
     </nav>
   );
 }

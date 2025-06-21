@@ -129,7 +129,7 @@ export default function ComposePage() {
             {isEditing ? 'Editar Rascunho' : 'Compor Email'}
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">
-            {isEditing ? 'Edite seu rascunho e envie quando estiver pronto' : 'Crie um novo email ou salve como rascunho'}
+            {isEditing ? 'Edite seu rascunho' : 'Crie um novo email ou salve como rascunho'}
           </p>
         </div>
 
@@ -190,16 +190,18 @@ export default function ComposePage() {
             </div>
 
             <div className="flex flex-wrap gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-              <button
-                onClick={handleSendEmail}
-                disabled={loading}
-                className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2"
-              >
-                {loading && (
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                )}
-                <span>Enviar</span>
-              </button>
+              {!isEditing && (
+                <button
+                  onClick={handleSendEmail}
+                  disabled={loading}
+                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2"
+                >
+                  {loading && (
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  )}
+                  <span>Enviar</span>
+                </button>
+              )}
 
               <button
                 onClick={handleSaveDraft}
