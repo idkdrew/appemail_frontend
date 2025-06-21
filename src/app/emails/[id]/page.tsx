@@ -21,13 +21,44 @@ export default function EmailDetailPage() {
 
   const fetchEmail = async (emailId: number) => {
     try {
-      const data = await markEmailAsRead(emailId); // já marca como lido aqui
+      const data = await markEmailAsRead(emailId);
       setEmail(data);
     } catch (err) {
       setError('Erro ao carregar email');
     } finally {
       setLoading(false);
     }
+  };
+
+  const formatDate = (dateString: string) => {
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch {
+      return dateString;
+    }
+  };
+
+  const getStatusBadge = (status: string) => {
+    const statusConfig = {
+      'enviado': { bg: 'bg-green-100', text: 'text-green-800', label: 'Enviado' },
+      'lido': { bg: 'bg-blue-100', text: 'text-blue-800', label: 'Lido' },
+      'nao_lido': { bg: 'bg-yellow-100', text: 'text-yellow-800', label: 'Não Lido' }
+    };
+    
+    const config = statusConfig[status as keyof typeof statusConfig] || statusConfig['lido'];
+    
+    return (
+      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.bg} ${config.text}`}>
+        {config.label}
+      </span>
+    );
   };
 
   if (loading) {
@@ -40,11 +71,25 @@ export default function EmailDetailPage() {
     );
   }
 
-  if (!email) {
+  if (error || !email) {
     return (
       <Layout>
-        <div className="text-center text-gray-500 dark:text-gray-400 py-8">
-          {error || 'Email não encontrado.'}
+        <div className="max-w-4xl mx-auto px-4 py-8">
+          <button
+            onClick={() => router.back()}
+            className="mb-6 inline-flex items-center text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors"
+          >
+            ← Voltar
+          </button>
+          
+          <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+            <h3 className="text-lg font-medium text-red-800 mb-2">
+              Erro ao carregar email
+            </h3>
+            <p className="text-red-600">
+              {error || 'Email não encontrado.'}
+            </p>
+          </div>
         </div>
       </Layout>
     );
@@ -55,25 +100,81 @@ export default function EmailDetailPage() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         <button
           onClick={() => router.back()}
-          className="mb-4 text-sm text-blue-600 hover:underline"
+          className="mb-6 inline-flex items-center text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors"
         >
-          ← Voltar
+          ← Voltar para emails
         </button>
 
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow">
-          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-              {email.assunto}
-            </h2>
-            <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
-              <div><strong>De:</strong> {email.emailRemetente}</div>
-              <div><strong>Para:</strong> {email.emailDestinatario}</div>
-              <div><strong>Data:</strong> {email.dataEnvio}</div>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+          {/* Email Header */}
+          <div className="bg-gray-50 dark:bg-gray-700 px-6 py-4 border-b border-gray-200 dark:border-gray-600">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                  {email.assunto || 'Sem assunto'}
+                </h1>
+                <div className="flex items-center space-x-4">
+                  {getStatusBadge(email.status)}
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    {formatDate(email.dataEnvio)}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="p-6 whitespace-pre-wrap text-gray-900 dark:text-white">
-            {email.corpo}
+          {/* Email Metadata */}
+          <div className="px-6 py-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-600">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
+                  De:
+                </label>
+                <p className="text-sm text-gray-900 dark:text-white font-medium">
+                  {email.emailRemetente}
+                </p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
+                  Para:
+                </label>
+                <p className="text-sm text-gray-900 dark:text-white font-medium">
+                  {email.emailDestinatario}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Email Body */}
+          <div className="px-6 py-8">
+            <div className="prose max-w-none">
+              <div className="text-gray-900 dark:text-white whitespace-pre-wrap leading-relaxed">
+                {email.corpo || 'Este email não possui conteúdo.'}
+              </div>
+            </div>
+          </div>
+
+          {/* Email Actions */}
+          <div className="px-6 py-4 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
+            <div className="flex justify-between items-center">
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                Email ID: {email.emailId}
+              </div>
+              <div className="flex space-x-3">
+                <button
+                  onClick={() => router.push('/compose')}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                >
+                  Compor Novo
+                </button>
+                <button
+                  onClick={() => router.push('/emails')}
+                  className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                >
+                  Ver Todos os Emails
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

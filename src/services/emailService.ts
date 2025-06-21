@@ -41,9 +41,9 @@ export const deleteDraft = async (id: number): Promise<void> => {
   });
 };
 
-// Email operations
+// Email operations - Updated methods
 export const sendEmailFromDraft = async (rascunhoId: number): Promise<Email> => {
-  const response = await api.post(`/api/emails/${rascunhoId}`, null, {
+  const response = await api.post(`/api/emails/rascunho/${rascunhoId}`, null, {
     headers: getAuthHeaders(),
   });
   return response.data.email;
@@ -63,8 +63,9 @@ export const getEmails = async (): Promise<Email[]> => {
   return response.data.emails;
 };
 
+// Changed from PUT to GET method
 export const markEmailAsRead = async (id: number): Promise<Email> => {
-  const response = await api.put(`/api/emails/${id}`, null, {
+  const response = await api.get(`/api/emails/${id}`, {
     headers: getAuthHeaders(),
   });
   return response.data.email;
