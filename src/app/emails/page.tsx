@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { getEmails, markEmailAsRead } from '../../services/emailService';
 import { Email } from '../../types/email';
 import Layout from '../../components/Layout';
-import { useRouter } from 'next/navigation'; // já está usando
+import { useRouter } from 'next/navigation';
 
 export default function EmailsPage() {
   const [emails, setEmails] = useState<Email[]>([]);
@@ -21,33 +21,36 @@ export default function EmailsPage() {
     try {
       const emailList = await getEmails();
       setEmails(emailList);
-    } catch (err) {
-      setError('Erro ao carregar emails');
+    } catch (err: any) {
+      // Don't show error for 404 - it just means no emails exist
+      if (err?.response?.status !== 404) {
+        setError('Erro ao carregar emails');
+      }
     } finally {
       setLoading(false);
     }
   };
 
   const handleEmailClick = (email: Email) => {
-  router.push(`/emails/${email.emailId}`);
+    router.push(`/emails/${email.emailId}`);
   };
 
   const getStatusColor = (status: string) => {
-  switch (status) {
-    case 'lido': return 'text-gray-500';
-    case 'nao_lido': return 'text-blue-600 font-semibold';
-    case 'enviado': return 'text-green-600';
-    default: return 'text-gray-500';
-  }
+    switch (status) {
+      case 'lido': return 'text-gray-500';
+      case 'nao_lido': return 'text-blue-600 font-semibold';
+      case 'enviado': return 'text-green-600';
+      default: return 'text-gray-500';
+    }
   };
 
   const getStatusText = (status: string) => {
-  switch (status) {
-    case 'lido': return 'Lido';
-    case 'nao_lido': return 'Não lido';
-    case 'enviado': return 'Enviado';
-    default: return status;
-  }
+    switch (status) {
+      case 'lido': return 'Lido';
+      case 'nao_lido': return 'Não lido';
+      case 'enviado': return 'Enviado';
+      default: return status;
+    }
   };
 
   if (loading) {
