@@ -30,20 +30,21 @@ export default function EmailDetailPage() {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleString('pt-BR', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-    } catch {
-      return dateString;
-    }
-  };
+  const formatDate = (dateString: string): string => {
+  try {
+    const [day, month, year] = dateString.split('-').map(Number);
+    const date = new Date(year, month - 1, day); // mês começa em 0
+
+    return date.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  } catch {
+    return dateString; // fallback se algo der errado
+  }
+};
+
 
   const getStatusBadge = (status: string) => {
     const statusConfig = {

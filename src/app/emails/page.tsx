@@ -22,7 +22,6 @@ export default function EmailsPage() {
       const emailList = await getEmails();
       setEmails(emailList);
     } catch (err: any) {
-      // Don't show error for 404 - it just means no emails exist
       if (err?.response?.status !== 404) {
         setError('Erro ao carregar emails');
       }

@@ -22,7 +22,6 @@ export default function DraftsPage() {
       const draftList = await getDrafts();
       setDrafts(draftList);
     } catch (err: any) {
-      // Don't show error for 404 - it just means no drafts exist
       if (err?.response?.status !== 404) {
         setError('Erro ao carregar rascunhos');
       }
