@@ -14,6 +14,7 @@ export default function ComposePage() {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+  const [isReply, setIsReply] = useState(false);
   const [draftId, setDraftId] = useState<number | null>(null);
   
   const router = useRouter();
@@ -21,11 +22,21 @@ export default function ComposePage() {
 
   useEffect(() => {
     const draftParam = searchParams.get('draft');
+    const replyParam = searchParams.get('reply');
+    const toParam = searchParams.get('to');
+    const subjectParam = searchParams.get('subject');
+    const bodyParam = searchParams.get('body');
+
     if (draftParam) {
       const id = parseInt(draftParam);
       setDraftId(id);
       setIsEditing(true);
       loadDraft(id);
+    } else if (replyParam === 'true') {
+      setIsReply(true);
+      if (toParam) setEmailDestinatario(toParam);
+      if (subjectParam) setAssunto(subjectParam);
+      if (bodyParam) setCorpo(bodyParam);
     }
   }, [searchParams]);
 
@@ -117,8 +128,21 @@ export default function ComposePage() {
       setEmailDestinatario('');
       setCorpo('');
       setIsEditing(false);
+      setIsReply(false);
       setDraftId(null);
     }
+  };
+
+  const getPageTitle = () => {
+    if (isEditing) return 'Editar Rascunho';
+    if (isReply) return 'Responder Email';
+    return 'Compor Email';
+  };
+
+  const getPageDescription = () => {
+    if (isEditing) return 'Edite seu rascunho';
+    if (isReply) return 'Responda ao email selecionado';
+    return 'Crie um novo email ou salve como rascunho';
   };
 
   return (
@@ -126,10 +150,10 @@ export default function ComposePage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            {isEditing ? 'Editar Rascunho' : 'Compor Email'}
+            {getPageTitle()}
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">
-            {isEditing ? 'Edite seu rascunho' : 'Crie um novo email ou salve como rascunho'}
+            {getPageDescription()}
           </p>
         </div>
 
@@ -157,8 +181,14 @@ export default function ComposePage() {
                 onChange={(e) => setEmailDestinatario(e.target.value)}
                 placeholder="destinatario@email.com"
                 className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                disabled={loading}
+                disabled={loading || isReply}
+                readOnly={isReply}
               />
+              {isReply && (
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  Campo bloqueado para resposta
+                </p>
+              )}
             </div>
 
             <div>

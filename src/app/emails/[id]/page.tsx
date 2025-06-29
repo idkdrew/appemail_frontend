@@ -45,6 +45,21 @@ export default function EmailDetailPage() {
   }
 };
 
+  const handleReply = () => {
+    if (!email) return;
+    
+    const replySubject = email.assunto.startsWith('Re: ') ? email.assunto : `Re: ${email.assunto}`;
+    const replyBody = `\n\n--- Email Original ---\nAssunto: ${email.assunto}\nRemetente: ${email.emailRemetente}\nCorpo: ${email.corpo}`;
+    
+    const queryParams = new URLSearchParams({
+      reply: 'true',
+      to: email.emailRemetente,
+      subject: replySubject,
+      body: replyBody
+    });
+    
+    router.push(`/compose?${queryParams.toString()}`);
+  };
 
   const getStatusBadge = (status: string) => {
     const statusConfig = {
@@ -162,6 +177,12 @@ export default function EmailDetailPage() {
                 Email ID: {email.emailId}
               </div>
               <div className="flex space-x-3">
+                <button
+                  onClick={handleReply}
+                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                >
+                  Responder
+                </button>
                 <button
                   onClick={() => router.push('/compose')}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
