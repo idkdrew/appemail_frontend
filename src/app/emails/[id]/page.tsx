@@ -41,15 +41,15 @@ export default function EmailDetailPage() {
       year: 'numeric'
     });
   } catch {
-    return dateString; // fallback se algo der errado
+    return dateString;
   }
 };
 
   const handleReply = () => {
     if (!email) return;
     
-    const replySubject = email.assunto.startsWith('Re: ') ? email.assunto : `Re: ${email.assunto}`;
-    const replyBody = `\n\n--- Email Original ---\nAssunto: ${email.assunto}\nRemetente: ${email.emailRemetente}\nCorpo: ${email.corpo}`;
+    const replySubject = `Re: ${email.assunto}`;
+    const replyBody = `\n\n--------------------\nResposta do último Email\nDE: ${email.emailRemetente}\nPARA: ${email.emailDestinatario}\nDATA: ${email.dataEnvio}\nASSUNTO: ${email.assunto}\nCORPO: ${email.corpo}`;
     
     const queryParams = new URLSearchParams({
       reply: 'true',
@@ -118,7 +118,7 @@ export default function EmailDetailPage() {
           onClick={() => router.back()}
           className="mb-6 inline-flex items-center text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors"
         >
-          ← Voltar para emails
+          Voltar para emails
         </button>
 
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
