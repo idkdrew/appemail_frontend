@@ -2,15 +2,32 @@
 
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { removeToken } from '../../utils/auth';
+import { useState } from 'react';
+import api from '../../services/api';
+import { getToken, removeToken } from '../../utils/auth';
 
 export default function Navigation() {
   const router = useRouter();
   const pathname = usePathname();
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleLogout = () => {
-    removeToken();
-    router.push('/login');
+  const handleLogout = async () => {
+    setMessage('');
+    setLoading(true);
+    try {
+      const token = getToken();
+      await api.post('/api/logout', null, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setMessage('Logout realizado com sucesso.');
+      removeToken();
+      setTimeout(() => router.push('/login'), 1000);
+    } catch {
+      setMessage('Erro no logout.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const navItems = [
